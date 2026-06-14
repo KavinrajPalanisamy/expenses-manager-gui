@@ -8,7 +8,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'guiExpenseManager';
+  title = 'Expenses Manager';
 
   formGroup!: FormGroup;
 
