@@ -19,3 +19,12 @@ body {
 .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-handle {
     background: black !important;
 }
+
+.app-dark .p-inputtext:focus {
+    border-color: var(--p-button-contrast-background) !important;
+    box-shadow: 0 0 0 1px var(--p-button-contrast-background) !important;
+}
+
+.app-dark .p-inputtext::placeholder {
+    color: var(--p-inputtext-placeholder-color) !important;
+}
