@@ -1,10 +1,57 @@
-<div class="card flex justify-center">
-    <form [formGroup]="formGroup">
-        <input type="text" pInputText formControlName="username" />
-        <br>
-        <p-password formControlName="password" [feedback]="false" />
-        <br>
-        <label for="switch1">Remember Me</label>&nbsp
-        <p-toggleswitch inputId="switch1" severity="contrast" formControlName="keepSignedIn" />
+<div class="min-h-screen flex items-center justify-center bg-zinc-950">
+  <p-card styleClass="w-96 border border-zinc-700">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+
+      <div class="text-center mb-2">
+        <h2 class="text-2xl font-semibold text-white">Sign In</h2>
+        <p class="text-sm mt-1 text-zinc-400">Welcome back</p>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="username" class="text-sm font-medium text-zinc-300">Username</label>
+        <input
+          id="username"
+          type="text"
+          pInputText
+          formControlName="username"
+          placeholder="Enter your username"
+          autocomplete="username"
+          class="w-full"
+        />
+        @if (formGroup.get('username')?.invalid && formGroup.get('username')?.touched) {
+          <small class="text-xs italic text-red-500">Username is required</small>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="password" class="text-sm font-medium text-zinc-300">Password</label>
+        <p-password
+          inputId="password"
+          formControlName="password"
+          [feedback]="false"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+        />
+        @if (formGroup.get('password')?.invalid && formGroup.get('password')?.touched) {
+          <small class="text-xs italic text-red-500">Password is required</small>
+        }
+      </div>
+
+      <div class="flex items-center gap-2">
+        <p-toggleswitch inputId="keepSignedIn" formControlName="keepSignedIn" severity="contrast" />
+        <label for="keepSignedIn" class="text-sm text-zinc-300 cursor-pointer">Remember me</label>
+      </div>
+
+      <p-button
+        type="submit"
+        label="Sign In"
+        severity="contrast"
+        styleClass="w-full"
+        [disabled]="formGroup.invalid"
+      />
+
     </form>
+  </p-card>
 </div>

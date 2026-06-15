@@ -22,7 +22,10 @@ import { PrimeNgModule } from './shared/primeng.module';
   ],
   providers: [providePrimeNG({
     theme: {
-      preset: Aura
+      preset: Aura,
+      options: {
+        darkModeSelector: '.app-dark'
+      }
     }
   })],
   bootstrap: [AppComponent]

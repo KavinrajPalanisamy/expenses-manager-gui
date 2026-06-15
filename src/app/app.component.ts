@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +7,19 @@ import { FormControl, FormGroup } from '@angular/forms';
   standalone: false,
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'Expenses Manager';
-
+export class AppComponent implements OnInit {
   formGroup!: FormGroup;
 
   ngOnInit() {
     this.formGroup = new FormGroup({
-      username: new FormControl(),
-      password: new FormControl(),
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
       keepSignedIn: new FormControl<boolean>(false)
     });
   }
 
-
-
+  onSubmit() {
+    if (this.formGroup.invalid) return;
+    console.log(this.formGroup.value);
+  }
 }
