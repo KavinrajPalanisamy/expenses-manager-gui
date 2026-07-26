@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Router } from "@angular/router";
+import { UAParser } from "ua-parser-js";
 
 import { environment } from "../environments/environment";
 
@@ -15,11 +16,26 @@ interface LoginRes {
 })
 
 export class AuthService {
+  parser = new UAParser();
+  result = this.parser.getResult();
+  headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'X-Browser': this.result.browser.name ?? '',
+    'X-Browser-Version': this.result.browser.version ?? '',
+    'X-OS': this.result.os.name ?? '',
+    'X-OS-Version': this.result.os.version ?? '',
+    'X-Device-Type': this.result.device.type ?? 'desktop',
+    'X-Device-Vendor': this.result.device.vendor ?? '',
+    'X-Device-Model': this.result.device.model ?? '',
+    'X-Language': navigator.language,
+    'X-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+    'X-Platform': navigator.platform
+  });
 
   constructor(private http: HttpClient, private router: Router) { }
 
   login(data: any): Observable<LoginRes> {
-    return this.http.post<LoginRes>(`${environment.apiUrl}/auth/verify-user`, data, { withCredentials: true }).pipe(
+    return this.http.post<LoginRes>(`${environment.apiUrl}/auth/verify-user`, data, { headers: this.headers, withCredentials: true }).pipe(
       tap(res => {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('userData', res.data);
@@ -31,7 +47,7 @@ export class AuthService {
   logOut(reason: string) {
     let sessionDetails = this.getSessionDetails();
     sessionDetails.revokeReason = reason;
-    return this.http.post<LoginRes>(`${environment.apiUrl}/auth/log-out`, sessionDetails, { withCredentials: true }).pipe(
+    return this.http.post<LoginRes>(`${environment.apiUrl}/auth/log-out`, sessionDetails, { headers: this.headers, withCredentials: true }).pipe(
       tap(res => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userData');
@@ -78,5 +94,23 @@ export class AuthService {
     } catch (error) {
       return true;
     }
+  }
+
+  getAccessToken() {
+    let accessToken = localStorage.getItem('accessToken') || '';
+    if (!accessToken) {
+      return null;
+    }
+    return accessToken;
+  }
+
+  refreshToken() {
+    let sessionDetails = this.getSessionDetails();
+    return this.http.post<LoginRes>(`${environment.apiUrl}/auth/refresh-token`, sessionDetails, { withCredentials: true }).pipe(
+      tap(res => {
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('userData', res.data);
+      })
+    );
   }
 }
