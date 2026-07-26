@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+import { authInterceptor } from "./interceptors/auth.interceptor";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,16 +26,20 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     AppRoutingModule,
     PrimeNgModule,
     ReactiveFormsModule,
-    HttpClientModule
   ],
-  providers: [providePrimeNG({
-    theme: {
-      preset: Aura,
-      options: {
-        darkModeSelector: '.app-dark'
+  providers: [
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: '.app-dark'
+        }
       }
-    }
-  })],
+    }),
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    )
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
