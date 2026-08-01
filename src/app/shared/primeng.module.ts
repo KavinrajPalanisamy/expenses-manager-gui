@@ -21,6 +21,10 @@ import { DividerModule } from 'primeng/divider';
 import { PanelModule } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToggleSwitch } from 'primeng/toggleswitch';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DatePickerModule } from 'primeng/datepicker';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -43,7 +47,11 @@ const PRIMENG_MODULES = [
   DividerModule,
   PanelModule,
   ProgressSpinnerModule,
-  ToggleSwitch
+  ToggleSwitch,
+  InputGroupModule,
+  InputGroupAddonModule,
+  FloatLabelModule,
+  DatePickerModule
 ];
 
 @NgModule({
