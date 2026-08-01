@@ -1,0 +1,115 @@
+<div class="min-h-screen flex items-center justify-center bg-zinc-950">
+    <p-card styleClass="w-96 border border-zinc-700">
+        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+            <div class="card grid grid-cols-1 md:grid-cols-1 gap-4">
+                <div class="title">
+                    <h1>Create Account</h1>
+                    <h3 style="font-weight: normal;">Manage your expenses with ease</h3>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <p-inputgroup>
+                        <p-inputgroup-addon>
+                            <i class="pi pi-user"></i>
+                        </p-inputgroup-addon>
+                        <input style="margin-right: 4px; border-radius: var(--p-form-field-border-radius);;" pInputText formControlName="firstName" placeholder="First Name" />
+                        <input style="margin-left: 4px; border-radius: var(--p-form-field-border-radius);" pInputText formControlName="lastName" placeholder="Last Name" />
+                    </p-inputgroup>
+                    <div *ngIf="signUpForm.get('firstName')?.invalid && signUpForm.get('firstName')?.touched" class="text-s text-red-300">
+                        <small *ngIf="signUpForm.get('firstName')?.errors?.['required']">First Name is required</small>
+                        <small *ngIf="signUpForm.get('firstName')?.errors?.['minlength'] as err">Minimum {{ err.requiredLength }} characters required</small>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <p-inputgroup>
+                        <p-inputgroup-addon>
+                            <i class="pi pi-id-card"></i>
+                        </p-inputgroup-addon>
+                        <input pInputText formControlName="userName" placeholder="Username" />
+                        <p-inputgroup-addon *ngIf="signUpForm.get('userName')?.pending">
+                            <i class="pi pi-spin pi-spinner"></i>
+                        </p-inputgroup-addon>
+                    </p-inputgroup>
+                    <div *ngIf="signUpForm.get('userName')?.invalid && signUpForm.get('userName')?.touched" class="text-s text-red-300">
+                        <small *ngIf="signUpForm.get('userName')?.errors?.['required']">Username is required</small>
+                    </div>
+                    <div *ngIf="signUpForm.get('userName')?.hasError('isUserExits') && signUpForm.get('userName')?.touched" class="text-s text-red-300">
+                        <small>This username is already taken</small>
+                    </div>
+                </div>
+
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-id-card"></i>
+                    </p-inputgroup-addon>
+                    <input pInputText formControlName="displayName" placeholder="Display name or Nickname" />
+                </p-inputgroup>
+
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-calendar"></i>
+                    </p-inputgroup-addon>
+                    <p-datepicker formControlName="dateOfBirth" class="flex flex-1" dateFormat="yy-mm-dd" placeholder="Date of Birth" [maxDate]="maxDate" [minDate]="minDate" [defaultDate]="defaultDate"/>
+                </p-inputgroup>
+
+                <div class="flex flex-col gap-1">
+                    <p-inputgroup>
+                        <p-inputgroup-addon>
+                            <i class="pi pi-at"></i>
+                        </p-inputgroup-addon>
+                        <input class="w-full" pInputText formControlName="email" placeholder="Email Address" type="email"/>
+                        <p-inputgroup-addon *ngIf="signUpForm.get('email')?.pending">
+                            <i class="pi pi-spin pi-spinner"></i>
+                        </p-inputgroup-addon>
+                    </p-inputgroup>
+                    <div *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" class="text-s text-red-300">
+                        <small *ngIf="signUpForm.get('email')?.errors?.['required']">Email is required</small>
+                        <small *ngIf="signUpForm.get('email')?.errors?.['email']">Enter a valid email</small>
+                    </div>
+                    <div *ngIf="signUpForm.get('email')?.hasError('isUserExits') && signUpForm.get('email')?.touched" class="text-s text-red-300">
+                        <small>This email is already taken</small>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <p-inputgroup>
+                        <p-inputgroup-addon>
+                            <i class="pi pi-key"></i>
+                        </p-inputgroup-addon>
+                        <input pInputText formControlName="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'"/>
+                        <p-inputgroup-addon>
+                            <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="togglePasswordVisibility()"></i>
+                        </p-inputgroup-addon>
+                    </p-inputgroup>
+                    <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="text-s text-red-300">
+                        <small *ngIf="signUpForm.get('password')?.errors?.['required']">Password is required</small>
+                        <small *ngIf="signUpForm.get('password')?.errors?.['minlength'] as err">Minimum {{ err.requiredLength }} characters required</small>
+                    </div>
+                </div>
+
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-key"></i>
+                    </p-inputgroup-addon>
+                    <input pInputText formControlName="confirmPassword" placeholder="Confirm Password" [type]="showConfirmPassword ? 'text' : 'password'"/>
+                    <p-inputgroup-addon>
+                        <i [class]="showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="toggleConfirmPasswordVisibility()"></i>
+                    </p-inputgroup-addon>
+                </p-inputgroup>
+                
+                <div class="termsAndConitions">
+                    <p-checkbox class="pl-2 pr-2" severity="contrast" value="true" inputId="true" id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" [binary]="true" />
+                    <label for="acceptTermsAndConditions" class="ml-2 text-sm font-medium text-zinc-300">I accept the Terms and Conditions</label>
+                </div>
+                
+                <p-button type="submit" label="Register" severity="contrast" styleClass="w-full" [disabled]="signUpForm.invalid" [loading]="isRegistering" />
+            </div>
+            <div class="flex justify-center p-1">
+                <p class="login-link">
+                Already have an account? 
+                <a class="ml-1" style="color: var(--p-primary);" routerLink="/">Sign in</a>
+            </p>
+            </div>
+        </form>
+    </p-card>
+</div>

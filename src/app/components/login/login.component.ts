@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { finalize, Subject, takeUntil } from 'rxjs';
+import validator from "validator";
 
 import { AuthService } from "../../services/auth.service";
 
@@ -13,32 +14,38 @@ import { AuthService } from "../../services/auth.service";
 
 export class LoginComponent implements OnInit, OnDestroy {
 
-  formGroup!: FormGroup;
+  loginForm!: FormGroup;
   private terminateApiCalls$ = new Subject<void>();
+  isLoggingIn: boolean = false;
+  showPassword: boolean = false;
 
   constructor(private authSer: AuthService) { }
 
   ngOnInit() {
-    this.formGroup = new FormGroup({
+    this.loginForm = new FormGroup({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
       keepSignedIn: new FormControl<boolean>(false)
     });
   }
 
-  verifyLogin() {
-    let accessToken = localStorage.getItem('accessToken');
-    let userData = localStorage.getItem('userData');
-    if (accessToken && userData) {
-      
-    }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
-
 
   onSubmit() {
-    if (this.formGroup.invalid) return;
-    this.authSer.login(this.formGroup.value).pipe(takeUntil(this.terminateApiCalls$)).subscribe();
-  }
+    if (this.loginForm.invalid) return;
+    this.isLoggingIn = true;
+    let formData = { ...this.loginForm.value };
+    if (!validator.isEmail(formData.email)) {
+      formData.userName = formData.email;
+      delete formData.email;
+    }
+    this.authSer.login(formData).pipe(
+      takeUntil(this.terminateApiCalls$),
+      finalize(()=> this.isLoggingIn = false)
+    ).subscribe();
+}
 
   ngOnDestroy() {
     this.terminateApiCalls$.next();

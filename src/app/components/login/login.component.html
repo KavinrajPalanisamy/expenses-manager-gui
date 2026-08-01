@@ -1,57 +1,48 @@
 <div class="min-h-screen flex items-center justify-center bg-zinc-950">
   <p-card styleClass="w-96 border border-zinc-700">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
-
-      <div class="text-center mb-2">
+    <div class="card grid grid-cols-1 md:grid-cols-1 gap-4">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+      <div class="text-center">
         <h2 class="text-2xl font-semibold text-white">Sign In</h2>
         <p class="text-sm mt-1 text-zinc-400">Welcome back</p>
       </div>
-
       <div class="flex flex-col gap-1">
-        <label for="email" class="text-sm font-medium text-zinc-300">Email or Username</label>
-        <input
-          id="email"
-          type="text"
-          pInputText
-          formControlName="email"
-          placeholder="Enter your email or username"
-          autocomplete="email"
-          class="w-full"
-        />
-        @if (formGroup.get('email')?.invalid && formGroup.get('email')?.touched) {
-          <small class="text-xs italic text-red-500">Email or Username is required</small>
-        }
+        <p-inputgroup>
+            <p-inputgroup-addon>
+                <i class="pi pi-at"></i>
+            </p-inputgroup-addon>
+            <input class="w-full" pInputText formControlName="email" placeholder="Email or Username" type="text"/>
+        </p-inputgroup>
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-s text-red-300">
+            <small *ngIf="loginForm.get('email')?.errors?.['required']">This field is required</small>
+        </div>
       </div>
-
       <div class="flex flex-col gap-1">
-        <label for="password" class="text-sm font-medium text-zinc-300">Password</label>
-        <p-password
-          inputId="password"
-          formControlName="password"
-          [feedback]="false"
-          placeholder="Enter your password"
-          autocomplete="current-password"
-          styleClass="w-full"
-          inputStyleClass="w-full"
-        />
-        @if (formGroup.get('password')?.invalid && formGroup.get('password')?.touched) {
-          <small class="text-xs italic text-red-500">Password is required</small>
-        }
+        <p-inputgroup>
+            <p-inputgroup-addon>
+                <i class="pi pi-key"></i>
+            </p-inputgroup-addon>
+            <input pInputText formControlName="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'"/>
+            <p-inputgroup-addon>
+              <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="togglePasswordVisibility()"></i>
+            </p-inputgroup-addon>
+        </p-inputgroup>
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-s text-red-300">
+            <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</small>
+            <small *ngIf="loginForm.get('password')?.errors?.['minlength'] as err">Minimum {{ err.requiredLength }} characters required</small>
+        </div>
       </div>
-
       <div class="flex items-center gap-2">
         <p-toggleswitch inputId="keepSignedIn" formControlName="keepSignedIn" severity="contrast" />
         <label for="keepSignedIn" class="text-sm text-zinc-300 cursor-pointer">Remember me</label>
       </div>
-
-      <p-button
-        type="submit"
-        label="Sign In"
-        severity="contrast"
-        styleClass="w-full"
-        [disabled]="formGroup.invalid"
-      />
-
+      <p-button type="submit" label="Sign In" severity="contrast" styleClass="w-full" [disabled]="loginForm.invalid" [loading]="isLoggingIn" />
     </form>
+    </div>
+      <div class="flex justify-center p-1">
+        <p class="login-link"> Don't have an account? 
+          <a class="ml-1" style="color: var(--p-primary);" routerLink="/sign-up">Sign Up</a>
+        </p>
+      </div>
   </p-card>
 </div>
