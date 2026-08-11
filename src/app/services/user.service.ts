@@ -9,6 +9,7 @@ import { environment } from "../environments/environment";
 interface SignupRes {
   accessToken: string;
   data: string;
+  message: string;
 }
 
 @Injectable({

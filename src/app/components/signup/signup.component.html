@@ -87,15 +87,20 @@
                     </div>
                 </div>
 
-                <p-inputgroup>
-                    <p-inputgroup-addon>
-                        <i class="pi pi-key"></i>
-                    </p-inputgroup-addon>
-                    <input pInputText formControlName="confirmPassword" placeholder="Confirm Password" [type]="showConfirmPassword ? 'text' : 'password'"/>
-                    <p-inputgroup-addon>
-                        <i [class]="showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="toggleConfirmPasswordVisibility()"></i>
-                    </p-inputgroup-addon>
-                </p-inputgroup>
+                <div class="flex flex-col gap-1">
+                    <p-inputgroup>
+                        <p-inputgroup-addon>
+                            <i class="pi pi-key"></i>
+                        </p-inputgroup-addon>
+                        <input pInputText formControlName="confirmPassword" placeholder="Confirm Password" [type]="showConfirmPassword ? 'text' : 'password'"/>
+                        <p-inputgroup-addon>
+                            <i [class]="showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="toggleConfirmPasswordVisibility()"></i>
+                        </p-inputgroup-addon>
+                    </p-inputgroup>
+                    <div *ngIf="(signUpForm.get('password')?.touched && signUpForm.get('confirmPassword')?.touched)" class="text-s text-red-300">
+                        <small *ngIf="this.signUpForm.get('password')?.value != this.signUpForm.get('confirmPassword')?.value">Passwords do not match</small>
+                    </div>
+                </div>
                 
                 <div class="termsAndConitions">
                     <p-checkbox class="pl-2 pr-2" severity="contrast" value="true" inputId="true" id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" [binary]="true" />

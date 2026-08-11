@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 
 import { AuthService } from "../../services/auth.service";
 
@@ -12,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   userName: any;
 
-  constructor(private authSer: AuthService) { }
+  constructor(private authSer: AuthService, private messageService: MessageService) { }
 
   ngOnInit() {
     let userDetails = this.authSer.verifySession();
@@ -22,6 +23,21 @@ export class DashboardComponent implements OnInit {
   }
 
   logOut() {
-    this.authSer.logOut('User Logged Out').subscribe();
+    this.authSer.logOut('User Logged Out').subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.message
+        });
+      },
+    });
   }
 }

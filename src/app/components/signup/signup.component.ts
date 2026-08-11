@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, finalize } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 import { UserService } from "../../services/user.service";
 
@@ -22,7 +23,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
-  constructor(private userSer: UserService) { }
+  constructor(private userSer: UserService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.signUpForm = new FormGroup({
@@ -47,12 +48,26 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.signUpForm.value);
     this.isRegistering = true;
     this.userSer.registerUser(this.signUpForm.value).pipe(
       takeUntil(this.terminateApiCalls$),
       finalize(()=> this.isRegistering = false)
-    ).subscribe();
+    ).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.message
+        });
+      },
+    });
   }
 
   ngOnDestroy() {

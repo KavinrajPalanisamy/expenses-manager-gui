@@ -8,6 +8,7 @@ import { authInterceptor } from "./interceptors/auth.interceptor";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MessageService } from 'primeng/api';
 
 import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeng/themes';
@@ -83,7 +84,8 @@ const Noir = definePreset(Aura, {
     }),
     provideHttpClient(
       withInterceptors([authInterceptor])
-    )
+    ),
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
