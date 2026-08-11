@@ -9,6 +9,7 @@ import { environment } from "../environments/environment";
 interface LoginRes {
   accessToken: string;
   data: string;
+  message: string;
 }
 
 @Injectable({

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize, Subject, takeUntil } from 'rxjs';
 import validator from "validator";
+import { MessageService } from 'primeng/api';
 
 import { AuthService } from "../../services/auth.service";
 
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isLoggingIn: boolean = false;
   showPassword: boolean = false;
 
-  constructor(private authSer: AuthService) { }
+  constructor(private authSer: AuthService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -44,7 +45,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authSer.login(formData).pipe(
       takeUntil(this.terminateApiCalls$),
       finalize(()=> this.isLoggingIn = false)
-    ).subscribe();
+    ).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message
+        });
+      },
+    });
 }
 
   ngOnDestroy() {
