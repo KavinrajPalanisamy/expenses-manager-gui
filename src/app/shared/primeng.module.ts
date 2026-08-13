@@ -25,6 +25,9 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DatePickerModule } from 'primeng/datepicker';
+import { AvatarModule } from 'primeng/avatar';
+import { MenuModule } from 'primeng/menu';
+import { PanelMenu } from 'primeng/panelmenu';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -51,7 +54,10 @@ const PRIMENG_MODULES = [
   InputGroupModule,
   InputGroupAddonModule,
   FloatLabelModule,
-  DatePickerModule
+  DatePickerModule,
+  AvatarModule,
+  MenuModule,
+  PanelMenu
 ];
 
 @NgModule({

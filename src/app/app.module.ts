@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { authInterceptor } from "./interceptors/auth.interceptor";
+import { deviceInfoInterceptor } from './interceptors/device-info.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { PrimeNgModule } from './shared/primeng.module';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 
 const Noir = definePreset(Aura, {
@@ -64,7 +66,8 @@ const Noir = definePreset(Aura, {
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    SignupComponent
+    SignupComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +86,7 @@ const Noir = definePreset(Aura, {
       }
     }),
     provideHttpClient(
-      withInterceptors([authInterceptor])
+      withInterceptors([authInterceptor, deviceInfoInterceptor])
     ),
     MessageService
   ],

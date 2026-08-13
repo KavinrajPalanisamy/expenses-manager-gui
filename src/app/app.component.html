@@ -1,4 +1,21 @@
-<div class="card flex justify-center">
+<div class="min-h-screen bg-black text-white">
     <p-toast />
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="shrink-0 bg-black border-r border-zinc-800">
+            <app-sidebar></app-sidebar>
+        </aside>
+        
+        <!-- Main content -->
+        <main class="flex-1 bg-zinc-950 p-6">
+            <header>
+                <h1 style="background-color: black;">
+
+                    This is the header
+                </h1>
+            </header>
+            <router-outlet></router-outlet>
+        </main>
+    </div>
 </div>
-<router-outlet></router-outlet>
