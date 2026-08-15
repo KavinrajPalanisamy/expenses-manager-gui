@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { Router } from "@angular/router";
 import { UAParser } from "ua-parser-js";
 
@@ -17,6 +17,9 @@ interface LoginRes {
 })
 
 export class AuthService {
+private isLoggedInSource = new BehaviorSubject<boolean>(this.hasValidSession());
+  isLoggedIn$ = this.isLoggedInSource.asObservable();
+
   parser = new UAParser();
   result = this.parser.getResult();
   headers = new HttpHeaders({
@@ -35,12 +38,18 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  private hasValidSession(): boolean {
+    const token = localStorage.getItem('accessToken') || '';
+    return !!token && !this.isTokenExpired(token);
+  }
+
   login(data: any): Observable<LoginRes> {
     return this.http.post<LoginRes>(`${environment.apiUrl}/auth/verify-user`, data, { headers: this.headers, withCredentials: true }).pipe(
       tap(res => {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('userData', res.data);
-        this.router.navigate(['dashboard']);
+        this.isLoggedInSource.next(true);
+        this.router.navigate(['user/dashboard']);
       })
     );
   }
@@ -52,6 +61,7 @@ export class AuthService {
       tap(res => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userData');
+        this.isLoggedInSource.next(false);
         this.router.navigate(['']);
       })
     );

@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { authInterceptor } from "./interceptors/auth.interceptor";
+import { deviceInfoInterceptor } from './interceptors/device-info.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,53 +19,54 @@ import { PrimeNgModule } from './shared/primeng.module';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
 
 
 const Noir = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '{zinc.50}', 100: '{zinc.100}', 200: '{zinc.200}', 300: '{zinc.300}',
-      400: '{zinc.400}', 500: '{zinc.500}', 600: '{zinc.600}', 700: '{zinc.700}',
-      800: '{zinc.800}', 900: '{zinc.900}', 950: '{zinc.950}',
+      50: '{neutral.50}', 100: '{neutral.100}', 200: '{neutral.200}', 300: '{neutral.300}',
+      400: '{neutral.400}', 500: '{neutral.500}', 600: '{neutral.600}', 700: '{neutral.700}',
+      800: '{neutral.800}', 900: '{neutral.900}', 950: '{neutral.950}',
     },
     colorScheme: {
       light: {
-        primary: {
-          color: '{zinc.950}',
-          contrastColor: '#ffffff',
-          hoverColor: '{zinc.800}',
-          activeColor: '{zinc.700}',
+        surface: {
+          0: '#ffffff', 50: '{neutral.50}', 100: '{neutral.100}', 200: '{neutral.200}', 300: '{neutral.300}',
+          400: '{neutral.400}', 500: '{neutral.500}', 600: '{neutral.600}', 700: '{neutral.700}',
+          800: '{neutral.800}', 900: '{neutral.900}', 950: '{neutral.950}',
         },
-        highlight: {
-          background: '{zinc.950}',
-          focusBackground: '{zinc.700}',
-          color: '#ffffff',
-          focusColor: '#ffffff',
-        },
+        content: {
+          background: '{neutral.50}',
+          hoverBackground: '{neutral.100}',
+          borderColor: '{neutral.200}',
+        }
       },
       dark: {
-        primary: {
-          color: '{zinc.50}',
-          contrastColor: '{zinc.950}',
-          hoverColor: '{zinc.200}',
-          activeColor: '{zinc.300}',
+        surface: {
+          0: '#ffffff', 50: '{neutral.50}', 100: '{neutral.100}', 200: '{neutral.200}', 300: '{neutral.300}',
+          400: '{neutral.400}', 500: '{neutral.500}', 600: '{neutral.600}', 700: '{neutral.700}',
+          800: '{neutral.800}', 900: '{neutral.900}', 950: '{neutral.950}',
         },
-        highlight: {
-          background: 'rgba(250, 250, 250, .16)',
-          focusBackground: 'rgba(250, 250, 250, .24)',
-          color: 'rgba(255,255,255,.87)',
-          focusColor: 'rgba(255,255,255,.87)',
-        },
-      },
-    },
-  },
+        content: {
+          background: '{neutral.950}',
+          hoverBackground: '{neutral.900}',
+          borderColor: '{neutral.800}',
+        }
+      }
+    }
+  }
 });
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    SignupComponent
+    SignupComponent,
+    SidebarComponent,
+    TransactionsComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,7 @@ const Noir = definePreset(Aura, {
       }
     }),
     provideHttpClient(
-      withInterceptors([authInterceptor])
+      withInterceptors([authInterceptor, deviceInfoInterceptor])
     ),
     MessageService
   ],

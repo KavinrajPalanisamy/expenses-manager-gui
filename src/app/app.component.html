@@ -1,4 +1,35 @@
-<div class="card flex justify-center">
-    <p-toast />
+<div class="flex min-h-screen">
+    <aside class="shrink-0 bg-app" *ngIf="isLoggedIn$ | async">
+        <app-sidebar></app-sidebar>
+    </aside>
+    <main class="min-w-0 flex-1 bg-app p-6">
+        <header  *ngIf="isLoggedIn$ | async">
+            <div class="flex w-full items-center">
+                <div class="min-w-0 flex-1">
+                    <h1>{{title}}</h1>
+                </div>
+                <div class="shrink-0">
+                    <div class="shrink-0 relative">
+                        <button pButton type="button" severity="secondary" class="flex items-center gap-2" (click)="menu.toggle($event)">
+                            <i class="pi pi-user"></i>
+                            <span>{{ displayName }}</span>
+                            <i class="pi pi-chevron-down text-xs"></i>
+                        </button>
+
+                        <p-menu #menu [popup]="true" [model]="dropDownItems" appendTo="body">
+                            <ng-template #start>
+                                <div class="px-3 py-2 text-sm text-app-muted border-b border-app">
+                                    Signed in as <strong class="text-app">{{ userName }}</strong>
+                                    <br>
+                                    <span>{{email}}</span>
+                                </div>
+                            </ng-template>
+                        </p-menu>
+                    </div>
+                </div>
+            </div>
+            <p-divider type="solid" />
+        </header>
+        <router-outlet></router-outlet>
+    </main>
 </div>
-<router-outlet></router-outlet>
