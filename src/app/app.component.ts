@@ -17,55 +17,67 @@ export class AppComponent implements OnInit {
   constructor(private authSer: AuthService, private messageService: MessageService) {
     this.isLoggedIn$ = this.authSer.isLoggedIn$;
     this.applyStoredTheme();
+    this.isLoggedIn$.subscribe(loggedIn => {
+      if (loggedIn) {
+        this.loadUserDetails();
+      } else {
+        this.userName = '';
+        this.displayName = '';
+        this.email = '';
+      }
+    });
   }
 
+  isLoading: boolean = false;
   email: string = '';
   userName: string = '';
   displayName: string = '';
 
-  dropDownItems: any[] = [];
+  dropDownItems: any[] = [
+    {
+      separator: true
+    },
+    {
+      label: 'Switch Theme',
+      icon: 'pi pi-moon',
+      command: () => {
+        this.switchTheme();
+      }
+    },
+    {
+      separator: true
+    },
+    {
+      label: 'Edit Profile',
+      icon: 'pi pi-user-edit'
+    },
+    {
+      label: 'Change Password',
+      icon: 'pi pi-key'
+    },
+    {
+      separator: true
+    },
+    {
+      label: 'Logout',
+      icon: 'pi pi-sign-out',
+      command: () => {
+        this.logOut();
+      }
+    }
+  ];
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  private loadUserDetails() {
+    this.isLoading = true;
     let userDetails = this.authSer.verifySession();
     if (userDetails) {
       this.userName = userDetails.firstName;
       this.displayName = userDetails.displayName;
       this.email = userDetails.email;
-
-      this.dropDownItems = [
-        {
-          separator: true
-        },
-        {
-          label: 'Switch Theme',
-          icon: 'pi pi-moon',
-          command: () => {
-            this.switchTheme();
-          }
-        },
-        {
-          separator: true
-        },
-        {
-          label: 'Edit Profile',
-          icon: 'pi pi-user-edit'
-        },
-        {
-          label: 'Change Password',
-          icon: 'pi pi-key'
-        },
-        {
-          separator: true
-        },
-        {
-          label: 'Logout',
-          icon: 'pi pi-sign-out',
-          command: () => {
-            this.logOut();
-          }
-        }
-      ];
     }
+    this.isLoading = false;
   }
 
   logOut() {
