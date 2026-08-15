@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { MessageService } from 'primeng/api';
-import { Observable } from "rxjs";
+import { filter, Observable } from "rxjs";
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
 
   private readonly THEME_KEY = 'theme';
 
-  constructor(private authSer: AuthService, private messageService: MessageService) {
+  constructor(private authSer: AuthService, private messageService: MessageService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.isLoggedIn$ = this.authSer.isLoggedIn$;
     this.applyStoredTheme();
     this.isLoggedIn$.subscribe(loggedIn => {
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
+  title = 'Dashboard';
   isLoading: boolean = false;
   email: string = '';
   userName: string = '';
@@ -67,7 +68,19 @@ export class AppComponent implements OnInit {
     }
   ];
 
-  ngOnInit() { }
+  ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+        let route = this.activatedRoute;
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        this.title = route.snapshot.data['title'];
+      });
+  }
 
   private loadUserDetails() {
     this.isLoading = true;

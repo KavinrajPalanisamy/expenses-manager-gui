@@ -20,6 +20,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
 
 
 const Noir = definePreset(Aura, {
@@ -64,7 +65,8 @@ const Noir = definePreset(Aura, {
     LoginComponent,
     DashboardComponent,
     SignupComponent,
-    SidebarComponent
+    SidebarComponent,
+    TransactionsComponent
   ],
   imports: [
     BrowserModule,

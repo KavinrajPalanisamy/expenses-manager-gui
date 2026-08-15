@@ -5,6 +5,7 @@ import { authGuard } from "./core/guards/auth.guard";
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { SignupComponent } from './components/signup/signup.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -12,9 +13,12 @@ const routes: Routes = [
   { path: 'user/dashboard',
     component: DashboardComponent,
     canActivate: [authGuard],
-    children: [
-      { path: 'dashboard', loadComponent: () => import('./components/sidebar/sidebar.component').then(m => m.SidebarComponent) }
-    ]
+    data: { title: 'Dashboard' }
+  },
+  { path: 'user/transactions',
+    component: TransactionsComponent,
+    canActivate: [authGuard],
+    data: { title: 'Transactions' }
   }
 ];
 

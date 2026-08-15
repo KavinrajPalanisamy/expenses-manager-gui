@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 
 
 import { DashboardService } from "../../services/dashboard.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,7 @@ import { DashboardService } from "../../services/dashboard.service";
 export class SidebarComponent implements OnInit {
   menuItems: MenuItem[] | undefined;
 
-  constructor(private dashboardService: DashboardService, private messageService: MessageService) { }
+  constructor(private dashboardService: DashboardService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
     this.dashboardService.getMenuItems().pipe().subscribe({
@@ -55,6 +56,7 @@ export class SidebarComponent implements OnInit {
           currentSubMenu.push({
             label: subMenu.display_label,
             icon: 'pi ' + (subMenu?.icon || 'pi-envelope'),
+            url: 'user/transactions'
           })
         }
       }
@@ -62,4 +64,9 @@ export class SidebarComponent implements OnInit {
     }
     return framedMenu;
   }
+
+  navigateToPage(page:any) {
+    this.router.navigate([page.url]);
+  }
+
 }
