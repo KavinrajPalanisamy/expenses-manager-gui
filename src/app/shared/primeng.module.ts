@@ -28,6 +28,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { PanelMenu } from 'primeng/panelmenu';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -57,7 +58,8 @@ const PRIMENG_MODULES = [
   DatePickerModule,
   AvatarModule,
   MenuModule,
-  PanelMenu
+  PanelMenu,
+  SplitButtonModule
 ];
 
 @NgModule({

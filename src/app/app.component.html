@@ -1,21 +1,35 @@
-<div class="min-h-screen bg-black text-white">
-    <p-toast />
+<div class="flex min-h-screen">
+    <aside class="shrink-0 bg-black" *ngIf="isLoggedIn$ | async">
+        <app-sidebar></app-sidebar>
+    </aside>
+    <main class="min-w-0 flex-1 bg-black p-6">
+        <header  *ngIf="isLoggedIn$ | async">
+            <div class="flex w-full items-center">
+                <div class="min-w-0 flex-1">
+                    <h1>{{displayName}}</h1>
+                </div>
+                <div class="shrink-0">
+                    <div class="shrink-0 relative">
+                        <button pButton type="button" severity="secondary" class="flex items-center gap-2" (click)="menu.toggle($event)">
+                            <i class="pi pi-user"></i>
+                            <span>{{ displayName }}</span>
+                            <i class="pi pi-chevron-down text-xs"></i>
+                        </button>
 
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="shrink-0 bg-black border-r border-zinc-800">
-            <app-sidebar></app-sidebar>
-        </aside>
-        
-        <!-- Main content -->
-        <main class="flex-1 bg-zinc-950 p-6">
-            <header>
-                <h1 style="background-color: black;">
-
-                    This is the header
-                </h1>
-            </header>
-            <router-outlet></router-outlet>
-        </main>
-    </div>
+                        <p-menu #menu [popup]="true" [model]="dropDownItems" appendTo="body">
+                            <ng-template #start>
+                                <div class="px-3 py-2 text-sm text-zinc-400 border-b border-zinc-700">
+                                    Signed in as <strong class="text-white">{{ userName }}</strong>
+                                    <br>
+                                    <span>{{email}}</span>
+                                </div>
+                            </ng-template>
+                        </p-menu>
+                    </div>
+                </div>
+            </div>
+            <p-divider type="solid" />
+        </header>
+        <router-outlet></router-outlet>
+    </main>
 </div>
