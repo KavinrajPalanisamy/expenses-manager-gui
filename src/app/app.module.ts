@@ -22,7 +22,20 @@ import { SignupComponent } from './components/signup/signup.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 
-const Noir = definePreset(Aura);
+const Noir = definePreset(Aura, {
+  semantic: {
+    colorScheme: {
+      dark: {
+        content: {
+          background: '{neutral.950}',
+          hoverBackground: '{neutral.900}',
+          borderColor: '{neutral.800}',
+        }
+      }
+    }
+  }
+});
+
 @NgModule({
   declarations: [
     AppComponent,
