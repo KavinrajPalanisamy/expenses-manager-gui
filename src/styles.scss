@@ -6,6 +6,8 @@
 html,
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    background-color: var(--p-content-background);
 }
 
 * {
@@ -65,6 +67,25 @@ body {
   --transition-fast: 150ms ease;
   --transition-normal: 200ms ease;
   --transition-slow: 300ms ease;
+}
+
+// Theme-reactive replacements for hardcoded bg-black/text-white/etc classes.
+// These track PrimeNG's semantic tokens, so they flip automatically with
+// the .app-dark toggle instead of staying black in light mode.
+.bg-app {
+  background-color: var(--p-content-background);
+}
+
+.text-app {
+  color: var(--p-text-color);
+}
+
+.text-app-muted {
+  color: var(--p-text-muted-color);
+}
+
+.border-app {
+  border-color: var(--p-content-border-color);
 }
 
 button,
