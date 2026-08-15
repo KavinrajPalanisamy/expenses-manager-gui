@@ -1,10 +1,10 @@
-<div class="min-h-screen flex items-center justify-center bg-zinc-950">
-  <p-card styleClass="w-96 border border-zinc-700">
+<div class="min-h-screen flex items-center justify-center bg-app">
+  <p-card styleClass="w-96 border border-app">
     <div class="card grid grid-cols-1 md:grid-cols-1 gap-4">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
       <div class="text-center">
-        <h2 class="text-2xl font-semibold text-white">Sign In</h2>
-        <p class="text-sm mt-1 text-zinc-400">Welcome back</p>
+        <h2 class="text-2xl font-semibold">Sign In</h2>
+        <p class="text-sm mt-1 text-app-muted">Welcome back</p>
       </div>
       <div class="flex flex-col gap-1">
         <p-inputgroup>
@@ -24,7 +24,7 @@
             </p-inputgroup-addon>
             <input pInputText formControlName="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'"/>
             <p-inputgroup-addon>
-              <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="togglePasswordVisibility()"></i>
+              <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-app-muted cursor-pointer" (click)="togglePasswordVisibility()"></i>
             </p-inputgroup-addon>
         </p-inputgroup>
         <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-s text-red-300">
@@ -34,7 +34,7 @@
       </div>
       <div class="flex items-center gap-2">
         <p-toggleswitch inputId="keepSignedIn" formControlName="keepSignedIn" severity="contrast" />
-        <label for="keepSignedIn" class="text-sm text-zinc-300 cursor-pointer">Remember me</label>
+        <label for="keepSignedIn" class="text-sm text-app-muted cursor-pointer">Remember me</label>
       </div>
       <p-button type="submit" label="Sign In" severity="contrast" styleClass="w-full" [disabled]="loginForm.invalid" [loading]="isLoggingIn" />
     </form>

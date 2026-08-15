@@ -12,21 +12,22 @@ import { Observable } from "rxjs";
 export class AppComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
 
+  private readonly THEME_KEY = 'theme';
+
   constructor(private authSer: AuthService, private messageService: MessageService) {
     this.isLoggedIn$ = this.authSer.isLoggedIn$;
+    this.applyStoredTheme();
   }
 
   email: string = '';
   userName: string = '';
   displayName: string = '';
-  enableSidebar: boolean = false;
 
   dropDownItems: any[] = [];
 
   ngOnInit() {
     let userDetails = this.authSer.verifySession();
     if (userDetails) {
-      this.enableSidebar = true;
       this.userName = userDetails.firstName;
       this.displayName = userDetails.displayName;
       this.email = userDetails.email;
@@ -37,7 +38,10 @@ export class AppComponent implements OnInit {
         },
         {
           label: 'Switch Theme',
-          icon: 'pi pi-moon'
+          icon: 'pi pi-moon',
+          command: () => {
+            this.switchTheme();
+          }
         },
         {
           separator: true
@@ -83,4 +87,27 @@ export class AppComponent implements OnInit {
     });
   }
 
+  getCurrentTheme() {
+    const currentTheme = document.documentElement.classList.contains('app-dark');
+    return currentTheme ? 'Light' : 'Dark';
+  }
+  switchTheme() {
+    const isDark = document.documentElement.classList.contains('app-dark');
+    this.setTheme(isDark ? 'light' : 'dark');
+  }
+
+  private applyStoredTheme() {
+    const savedTheme = (localStorage.getItem(this.THEME_KEY) as 'dark' | 'light') || 'dark';
+    this.setTheme(savedTheme);
+  }
+
+  private setTheme(theme: 'dark' | 'light') {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('app-dark', 'dark');
+    } else {
+      root.classList.remove('app-dark', 'dark');
+    }
+    localStorage.setItem(this.THEME_KEY, theme);
+  }
 }

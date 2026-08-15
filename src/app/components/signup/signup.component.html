@@ -1,5 +1,5 @@
-<div class="min-h-screen flex items-center justify-center bg-zinc-950">
-    <p-card styleClass="w-96 border border-zinc-700">
+<div class="min-h-screen flex items-center justify-center bg-app">
+    <p-card styleClass="w-96 border border-app">
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
             <div class="card grid grid-cols-1 md:grid-cols-1 gap-4">
                 <div class="title">
@@ -78,7 +78,7 @@
                         </p-inputgroup-addon>
                         <input pInputText formControlName="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'"/>
                         <p-inputgroup-addon>
-                            <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="togglePasswordVisibility()"></i>
+                            <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-app-muted cursor-pointer" (click)="togglePasswordVisibility()"></i>
                         </p-inputgroup-addon>
                     </p-inputgroup>
                     <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="text-s text-red-300">
@@ -94,7 +94,7 @@
                         </p-inputgroup-addon>
                         <input pInputText formControlName="confirmPassword" placeholder="Confirm Password" [type]="showConfirmPassword ? 'text' : 'password'"/>
                         <p-inputgroup-addon>
-                            <i [class]="showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-gray-400 cursor-pointer" (click)="toggleConfirmPasswordVisibility()"></i>
+                            <i [class]="showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" class="text-app-muted cursor-pointer" (click)="toggleConfirmPasswordVisibility()"></i>
                         </p-inputgroup-addon>
                     </p-inputgroup>
                     <div *ngIf="(signUpForm.get('password')?.touched && signUpForm.get('confirmPassword')?.touched)" class="text-s text-red-300">
@@ -104,7 +104,7 @@
                 
                 <div class="termsAndConitions">
                     <p-checkbox class="pl-2 pr-2" severity="contrast" value="true" inputId="true" id="acceptTermsAndConditions" formControlName="acceptTermsAndConditions" [binary]="true" />
-                    <label for="acceptTermsAndConditions" class="ml-2 text-sm font-medium text-zinc-300">I accept the Terms and Conditions</label>
+                    <label for="acceptTermsAndConditions" class="ml-2 text-sm font-medium text-app-muted">I accept the Terms and Conditions</label>
                 </div>
                 
                 <p-button type="submit" label="Register" severity="contrast" styleClass="w-full" [disabled]="signUpForm.invalid" [loading]="isRegistering" />

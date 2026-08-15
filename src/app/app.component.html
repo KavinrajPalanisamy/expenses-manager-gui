@@ -1,8 +1,8 @@
 <div class="flex min-h-screen">
-    <aside class="shrink-0 bg-black" *ngIf="isLoggedIn$ | async">
+    <aside class="shrink-0 bg-app" *ngIf="isLoggedIn$ | async">
         <app-sidebar></app-sidebar>
     </aside>
-    <main class="min-w-0 flex-1 bg-black p-6">
+    <main class="min-w-0 flex-1 bg-app p-6">
         <header  *ngIf="isLoggedIn$ | async">
             <div class="flex w-full items-center">
                 <div class="min-w-0 flex-1">
@@ -18,8 +18,8 @@
 
                         <p-menu #menu [popup]="true" [model]="dropDownItems" appendTo="body">
                             <ng-template #start>
-                                <div class="px-3 py-2 text-sm text-zinc-400 border-b border-zinc-700">
-                                    Signed in as <strong class="text-white">{{ userName }}</strong>
+                                <div class="px-3 py-2 text-sm text-app-muted border-b border-app">
+                                    Signed in as <strong class="text-app">{{ userName }}</strong>
                                     <br>
                                     <span>{{email}}</span>
                                 </div>
