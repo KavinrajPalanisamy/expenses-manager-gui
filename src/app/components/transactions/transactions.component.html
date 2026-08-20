@@ -1,1 +1,9 @@
 <p>transactions works!</p>
+<hr>
+<div class="all-transactions" *ngIf="enableDivType == 'ALL' || enableDivType == 'TRANSACTION_ONLY'">
+    All transactions only DIV
+</div>
+<hr>
+<div class="transfers" *ngIf="enableDivType == 'ALL' || enableDivType == 'TRANSFERS'">
+    Transfers only DIV
+</div>

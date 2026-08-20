@@ -1,3 +1,72 @@
 :host ::ng-deep .p-panelmenu-panel {
     border: none;
 }
+
+.submenu-chevron {
+    transition: transform 0.2s ease;
+    transform: rotate(-90deg);
+
+    &.expanded {
+        transform: rotate(0deg);
+    }
+}
+
+.submenu-collapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.2s ease;
+
+    &.expanded {
+        grid-template-rows: 1fr;
+    }
+}
+
+.submenu-inner {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.p-menu-item-link {
+    border-radius: var(--p-menu-item-border-radius);
+    transition: background var(--p-menu-transition-duration), color var(--p-menu-transition-duration);
+
+    .p-menu-item-icon {
+        position: relative;
+        left: 0;
+        transition: left var(--p-menu-transition-duration);
+    }
+
+    &:hover:not(.active-menu-item) {
+        background: var(--p-menu-item-focus-background);
+        color: var(--p-menu-item-focus-color);
+
+        .p-menu-item-icon {
+            color: var(--p-menu-item-icon-focus-color);
+        }
+    }
+
+    &.active-menu-item {
+        background: var(--p-surface-200);
+        color: var(--p-menu-item-focus-color);
+        box-shadow: 0 0 2px var(--p-surface-200);
+
+        .p-menu-item-icon {
+            left: 6px;
+            color: var(--p-menu-item-icon-focus-color);
+        }
+    }
+}
+
+:host-context(.app-dark) .p-menu-item-link.active-menu-item {
+    background: var(--p-menu-item-focus-background);
+}
+
+.p-menu-submenu-label {
+    border-radius: var(--p-menu-item-border-radius);
+    transition: background var(--p-menu-transition-duration);
+
+    &:hover {
+        background: var(--p-menu-item-focus-background);
+    }
+}

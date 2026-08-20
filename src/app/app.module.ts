@@ -21,6 +21,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
+import { AccountsComponent } from './components/accounts/accounts.component';
+import { BudgetsComponent } from './components/budgets/budgets.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { ManageComponent } from './components/manage/manage.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { UserLayoutComponent } from './components/user-layout/user-layout.component';
 
 
 const Noir = definePreset(Aura, {
@@ -66,7 +72,13 @@ const Noir = definePreset(Aura, {
     DashboardComponent,
     SignupComponent,
     SidebarComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    AccountsComponent,
+    BudgetsComponent,
+    ReportsComponent,
+    ManageComponent,
+    SettingsComponent,
+    UserLayoutComponent
   ],
   imports: [
     BrowserModule,
