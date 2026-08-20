@@ -3,7 +3,8 @@ import { MenuItem, MessageService } from 'primeng/api';
 
 
 import { DashboardService } from "../../services/dashboard.service";
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,10 +14,14 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
   menuItems: MenuItem[] | undefined;
+  activeUrl: string = '';
 
   constructor(private dashboardService: DashboardService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
+    this.activeUrl = this.router.url;
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: any) => this.activeUrl = e.urlAfterRedirects);
     this.dashboardService.getMenuItems().pipe().subscribe({
       next: (res) => {
         if (res.success) {
@@ -40,27 +45,20 @@ export class SidebarComponent implements OnInit {
       let currentMenu = {
         label: menu.display_label,
         icon: 'pi ' + (menu?.icon || 'pi-envelope'),
-        items: []
-        // badge: '5',
+        url: menu.url
       }
       let currentSubMenu = [];
-      //  [
-      //   {
-      //     label: 'Compose',
-      //     icon: 'pi pi-file-edit',
-      //     // shortcut: '⌘+N'
-      //   }
-      // ]
-      if (menu?.sub_menu_items?.length > 1) {
-        for (const subMenu of menu.sub_menu_items) {
-          currentSubMenu.push({
-            label: subMenu.display_label,
-            icon: 'pi ' + (subMenu?.icon || 'pi-envelope'),
-            url: 'user/transactions'
-          })
-        }
+      for (const subMenu of menu.sub_menu_items || []) {
+        currentSubMenu.push({
+          label: subMenu.display_label,
+          icon: 'pi ' + (subMenu?.icon || 'pi-envelope'),
+          url: menu.url + subMenu.url
+        })
       }
-      framedMenu.push({ ...currentMenu, items: currentSubMenu });
+      const menuItem = currentSubMenu.length > 1
+        ? { ...currentMenu, items: currentSubMenu, expanded: true }
+        : currentMenu;
+      framedMenu.push(menuItem);
     }
     return framedMenu;
   }
@@ -69,4 +67,13 @@ export class SidebarComponent implements OnInit {
     this.router.navigate([page.url]);
   }
 
+  toggleGroup(menu: MenuItem) {
+    menu.expanded = !menu.expanded;
+  }
+
+  isActive(item: MenuItem): boolean {
+    if (!item.url) return false;
+    const path = '/' + item.url;
+    return this.activeUrl === path || this.activeUrl.startsWith(path + '/');
+  }
 }
